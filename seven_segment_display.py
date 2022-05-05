@@ -1,6 +1,7 @@
 import re
 import json
 from typing import Dict
+import sys
 
 # letters we won't allow to display in the seven segment display
 DISALLOWED_LETTERS = "gkmqwxyzio"
@@ -38,12 +39,41 @@ def longest_seven_segement_word(word_list: list[str]):
     other_longest_word, length = get_longest_corresponding_words(corresponding_word_len)
 
     return ("\n".join(other_longest_word), length)
+
+def show_words(word_list: list[str])->None:
+    for index, word in enumerate(word_list):
+        print(word)
+        if index%10==0 and index!=0:
+            # press enter to continue
+            input("Click enter to show the other 10")
+
+def acceptable_words(word_list: list[str]):
+    accepted_words = [word for word in word_list if not re.search(r"[{DISALLOWED_LETTERS}]", word)]
+    return {
+        "number_of_words": len(accepted_words),
+        "list of words": show_words(accepted_words),
+    }
+
+def main():
+    if len(sys.argv)>1:
+        word_list = dict_to_array(word_dict)
+        if sys.argv[1]=="-accepted":
+            accepted = acceptable_words(word_list)
+            print(f"Words that can be displayed by the 7-segment display")
+            print(accepted)
+        elif sys.argv[1] == "-longest":
+            longest_word, length = longest_seven_segement_word(word_list)
+            print(f"The longest words to be displayed by the seven segment display are {length} charcaters long")
+            input("Click enter to see them")
+            print(longest_word)
+
+    else:
+        raise Exception(
+            "You haven't provided the mode of service.\nArgumnets to provide:\n1. -accepted\t returns \
+            words that can be displayed by the 7-segment display\n\
+                2. -longest\t returns longest english word displayed in 7-segment display")
+
 if __name__ == '__main__':
-    
-    word_list = dict_to_array(word_dict)
-    long_words, length = longest_seven_segement_word(word_list)
-    print(f"The longest words to be displayed by the seven segment display are {length} charcaters long")
-    input("Click enter to see them")
-    print(long_words)
+    main()
 
 
