@@ -38,7 +38,6 @@ def longest_seven_segement_word(word_list: list[str]):
     other_longest_word, length = get_longest_corresponding_words(corresponding_word_len)
 
     return ("\n".join(other_longest_word), length)
-
 if __name__ == '__main__':
     
     word_list = dict_to_array(word_dict)
